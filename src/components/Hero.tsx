@@ -4,11 +4,12 @@ export const Hero = ({ title }: { title: string }) => (
   <Flex
     justifyContent="center"
     alignItems="top"
-    height="10vh"
+    height="100px"
+    minWidth="400px"
     bgGradient="linear(to-l, heroGradientStart, heroGradientEnd)"
     bgClip="text"
   >
-    <Heading fontSize="6vw">{title}</Heading>
+    <Heading fontSize="72px">{title}</Heading>
   </Flex>
 )
 

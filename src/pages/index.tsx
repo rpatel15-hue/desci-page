@@ -14,6 +14,7 @@ import { Container } from '../components/Container'
 import { Header } from '../components/Header'
 import { Hero } from '../components/Hero'
 import { Main } from '../components/Main'
+import { ProjectList } from '../components/ProjectList'
 import { Footer } from '../components/Footer'
 
 const Index = () => (
@@ -23,7 +24,9 @@ const Index = () => (
     </Header>
     <Hero />
 
-    <Main></Main>
+    <Main>
+      <ProjectList />
+    </Main>
 
     <Footer>
       Footer text
