@@ -2,8 +2,8 @@
   "private": true,
   "scripts": {
     "dev": "next",
-    "build": "next build",
-    "start": "next start"
+    "build": "next build --output public",
+    "start": "next start",
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.2",
