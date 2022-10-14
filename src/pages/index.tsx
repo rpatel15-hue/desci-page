@@ -11,26 +11,18 @@ import {
 import { CheckCircleIcon, LinkIcon } from '@chakra-ui/icons'
 
 import { Container } from '../components/Container'
-import { Header } from '../components/Header'
+// import { Header } from '../components/Header'
 import { Hero } from '../components/Hero'
-import { Main } from '../components/Main'
-import { ProjectList } from '../components/ProjectList'
-import { Footer } from '../components/Footer'
+// import { Main } from '../components/Main'
+import { ProjectMaster } from '../components/project/ProjectMaster'
+// import { Footer } from '../components/Footer'
 
 const Index = () => (
   <Container height="100vh">
-    <Header>
-      Header text
-    </Header>
+    {/* <Header /> */}
     <Hero />
-
-    <Main>
-      <ProjectList />
-    </Main>
-
-    <Footer>
-      Footer text
-    </Footer>
+    <ProjectMaster />
+    {/* <Footer /> */}
   </Container>
 )
 
