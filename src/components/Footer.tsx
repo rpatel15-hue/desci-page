@@ -24,6 +24,10 @@ export const Footer = () => (
         mx={'auto'}
         >
         <Text mt="2">© 2022 DeSci Page. All rights reserved</Text>
+            <Text mt="2">Made with ❤️ by Psyk.Care Team</Text>
+            <Text mt="2">
+                Special thanks to Jocelynn Pearl, who curates the DeSci Wiki page. This project would not have been possible without the information found on the DeSci Wiki page.
+            </Text>
         </Flex>
     </Box>
 );
