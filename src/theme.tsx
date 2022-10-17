@@ -24,7 +24,9 @@ const theme = extendTheme({
         default: '#a7d9fc',
         // _dark: '#fbec8f',
       },
+
     },
+
     radii: {
       button: '12px',
     },
@@ -34,6 +36,7 @@ const theme = extendTheme({
   },
   fonts,
   breakpoints,
+
 })
 
 export default theme
