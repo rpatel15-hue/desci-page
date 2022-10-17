@@ -11,11 +11,12 @@ type ProjectCardProps = {
 
 }
 
-const uniqueTagsList = project_db.map((project) => project.Property.split(',')).flat().filter((value, index, self) => self.indexOf(value) === index)
+const uniqueTagsList = project_db.map((project) => project.Property.split(',')).flat().map((tag) => tag.trim()).filter((value, index, self) => self.indexOf(value) === index)
 const tagColors = ['red', 'orange', 'yellow', 'green', 'teal', 'blue', 'cyan', 'purple', 'pink', 'gray']
 const tagColorMap = new Map()
-uniqueTagsList.forEach((tag, index) => tagColorMap.set(tag, tagColors[index % tagColors.length]))
-
+uniqueTagsList.forEach((tag, index) => {
+    tagColorMap.set(tag, tagColors[index % tagColors.length])
+})
 export const TagColors = (tag) => {
     return tagColorMap.get(tag)
 }

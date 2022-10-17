@@ -6,12 +6,20 @@ import {Container} from "../Container";
 import projects_db from '../../projects_db.json'
 import {useState,useEffect} from "react";
 
-
+// sort by OrgName
 const ProjectsDB = projects_db.map((project, index) => {
     return {...project, key: index}
 }
+).sort((a, b) => {
+    if (a.OrgName < b.OrgName) {
+        return -1;
+    }
+    if (a.OrgName > b.OrgName) {
+        return 1;
+    }
+    return 0;
+}
 )
-
 
 const TagFilter = ({uniqueTagsList, selectedTags, setSelectedTags}) => {
     return (
@@ -54,7 +62,8 @@ const ProjectList = ({projects}) => {
                              title={project.OrgName}
                              description={project.Comments}
                              website={project.website}
-                             tags={project.Property.split(',')}/>
+                             tags={project.Property.split(',').map((tag) => tag.trim())}
+                />
             ))}
         </SimpleGrid>
     )
@@ -63,17 +72,16 @@ const ProjectList = ({projects}) => {
 const ProjectMaster = () => {
     const [selectedTags, setSelectedTags] = useState([])
     const [projects, setProjects] = useState(ProjectsDB)
-    const [uniqueTagsList, setUniqueTagsList] = useState([])
 
-    useEffect(() => {
-        setUniqueTagsList(projects.map((project) => project.Property.split(',')).flat().filter((value, index, self) => self.indexOf(value) === index))
-    }, [])
+    const uniqueTagsList = ProjectsDB.map((project) => project.Property.split(',')).flat().map((tag) => tag.trim()).filter((value, index, self) => self.indexOf(value) === index)
 
     useEffect(() => {
         setProjects(ProjectsDB.filter((project) => {
-            return selectedTags.length === 0 || project.Property.split(',').some((tag) => selectedTags.includes(tag))
+            if (selectedTags.length === 0) return true
+            return selectedTags.every((tag) => project.Property.split(',').map((tag) => tag.trim()).includes(tag))
         }))
-    }, [selectedTags])
+    }
+    , [selectedTags])
 
     return (
         <Container>
