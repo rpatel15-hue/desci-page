@@ -1,45 +1,88 @@
-import {SimpleGrid,
+import {SimpleGrid,HStack,Button,Wrap,WrapItem
 } from '@chakra-ui/react'
-import { ProjectCard } from './ProjectCard'
+import { ProjectCard,TagColors} from './ProjectCard'
 import {Container} from "../Container";
+import projects_db from '../../projects_db.json'
+import {useState,useEffect,useRef} from "react";
 
 
-const cards_data = [
-  {
-    title: 'Wellness DAO',
-    description: 'We are building a DAO dedicated to normalizing Mental-Health Care and providing Resources as a Public Good and shatter the stigmas that surround getting help.',
-    website: 'wellnessdao.life'
-  },
-  {
-    title: 'UltraRareBIO',
-    description: 'UltraRare is a web3 collective exploring the intersection of art and science. Our team includes scientists, developers, and artists. We care about communicating science through audio and visual means, and produce UltraRare The Podcast to help onboard people to web3 space.',
-    website: 'ultrarare.bio'
-  },
-  {
-    title: 'VitaDAO',
-    description: 'VitaDAO is a DAO collective for community-governed and decentralized drug development. Our core mission is the acceleration of research and development (R&D) in the longevity space and the extension of human life and healthspan. To achieve this, VitaDAO collectively funds and digitizes research in the form of IP-NFTs.',
-    website: 'vitadao.com'
-  },
-  {
-    title: 'DeBio',
-    description: 'DeBio eliminates risks of genetic discrimination by leveraging blockchain technology and high-level encryption to protect identity — while allowing users to access the benefits of genetic testing, Anonymous-First Appchain for Medical and Bioinformatics Data.',
-    website: 'debio.network'
-  },
-  {
-    title: 'PsyDao',
-    description: 'PsyDAO is a decentralised organisation with the goal of funding research at the intersection of psychedelics and mental health.',
-    website: 'psydao.io'
-  },
-]
-
-const ProjectMaster = () => (
-    <Container>
-      <SimpleGrid spacing={12} minChildWidth={'300px'}>
-        {cards_data.map((card) => (
-            <ProjectCard title={card.title} description={card.description} website={card.website}/>
-        ))}
-      </SimpleGrid>
-    </Container>
+const ProjectsDB = projects_db.map((project, index) => {
+    return {...project, key: index}
+}
 )
+
+const ProjectMaster = () => {
+    const [selectedTags, setSelectedTags] = useState([])
+    const [projects, setProjects] = useState(ProjectsDB)
+    //const [tags, setTags] = useState(new Map())
+    const [uniqueTagsList, setUniqueTagsList] = useState([])
+
+
+
+    const uniqueTagsListRef = useRef(uniqueTagsList)
+    uniqueTagsListRef.current = uniqueTagsList
+
+    //const tagsRef = useRef(tags)
+    //tagsRef.current = tags
+
+    const selectedTagsRef = useRef(selectedTags)
+    selectedTagsRef.current = selectedTags
+
+    const projectsRef = useRef(projects)
+    projectsRef.current = projects
+
+    useEffect(() => {
+        setUniqueTagsList(projectsRef.current.map((project) => project.Property.split(',')).flat().filter((value, index, self) => self.indexOf(value) === index))
+    }, [])
+
+
+    useEffect(() => {
+        setProjects(ProjectsDB.filter((project) => {
+            return selectedTagsRef.current.length === 0 || project.Property.split(',').some((tag) => selectedTagsRef.current.includes(tag))
+        }))
+    }, [selectedTags])
+
+    return (
+        <Container>
+            <HStack spacing={4} mt={4} mb={8}>
+                <Button
+                    colorScheme="blue"
+                    variant="outline"
+                    onClick={() => {
+                        setSelectedTags([])
+                    }}
+                >
+                    All
+                </Button>
+                <Wrap spacing={4}>
+                    {uniqueTagsListRef.current.map((tag) => (
+                        <WrapItem key={tag}>
+                            <Button
+                                colorScheme={TagColors(tag)}
+                                variant={selectedTagsRef.current.includes(tag) ? 'solid' : 'outline'}
+                                onClick={() => {
+                                    setSelectedTags(selectedTagsRef.current.includes(tag) ?
+                                        selectedTagsRef.current.filter((t) => t !== tag) :
+                                        [...selectedTagsRef.current, tag])
+                                }}
+                            >
+                                {tag}
+                            </Button>
+                        </WrapItem>
+                    ))}
+                </Wrap>
+            </HStack>
+            <SimpleGrid columns={{base: 1, md: 2, lg: 3}} spacing={10}>
+                {projectsRef.current.map((project) => (
+                    <ProjectCard key={project.key}
+                                 title={project.OrgName}
+                                 description={project.Comments}
+                                 website={project.website}
+                                 tags={project.Property.split(',')}/>
+                ))}
+            </SimpleGrid>
+        </Container>
+    );
+}
 
 export default ProjectMaster

@@ -6,7 +6,7 @@ import {Hero} from "../components/Hero";
 const Index = () => (
     <>
         <Header />
-        <Hero/>
+        <Hero />
         <ProjectMaster />
         <Footer />
     </>
